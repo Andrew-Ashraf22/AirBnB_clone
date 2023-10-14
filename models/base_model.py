@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """make a base class"""
-import uuid
+from uuid import uuid4
 from datetime import datetime
 import models
 
@@ -19,13 +19,14 @@ class BaseModel:
         self.id = str(uuid.uuid4())
         self.created_at = datetime.today()
         self.updated_at = datetime.today()
-        models.storage.new(self)
         if len(kwargs) != 0:
             for i, j in kwargs.items():
                 if i == "created_at" or i == "updated_at":
                     self.__dict__[i] = datetime.strptime(j, tform)
                 else:
                     self.__dict__[i] = j
+        else:
+            models.storage.new(self)
 
     def save(self):
         """update the update_at var"""
